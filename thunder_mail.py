@@ -258,16 +258,25 @@ async def maintenance_job(context: ContextTypes.DEFAULT_TYPE):
 
 # --- RUNNER ---
 def run_bot_process():
+    """Funkcja uruchamiana w osobnym wątku"""
+    # Fix dla loopa w wątku
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
+    
     db.init_db()
-    app = Application.builder().token(TOKEN).build()
+    
+    # TOKEN pobierany z env
+    app = Application.builder().token(os.getenv("TELEGRAM_TOKEN")).build()
 
+    # Handlery
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CallbackQueryHandler(menu_callback))
 
-    app.job_queue.run_repeating(check_mail_job, interval=20, first=10)  # Interwał 20s dla oszczędności
-    app.job_queue.run_repeating(maintenance_job, interval=3600 * 24, first=60)
+    # Jobs
+    app.job_queue.run_repeating(check_mail_job, interval=20, first=10)
+    app.job_queue.run_repeating(maintenance_job, interval=86400, first=60)
 
-    print("🤖 Bot ThunderMail wystartował w tle.")
-    app.run_polling(allowed_updates=Update.ALL_TYPES)
+    print("🤖 Bot ThunderMail wystartował pomyślnie!")
+    
+    # WAŻNE: stop_signals=None jest kluczowe, gdy bot działa w wątku!
+    app.run_polling(stop_signals=None)
