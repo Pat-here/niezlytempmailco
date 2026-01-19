@@ -1,10 +1,12 @@
-import threading, os
+import threading, os, time
 from web_app import app
 from thunder_mail import run_bot_process
 
-# Start Bota
-print("🚀 Start bota...")
-threading.Thread(target=run_bot_process, daemon=True).start()
+# Blokada przed wieloma instancjami bota
+if os.environ.get('BOT_ALREADY_STARTED') is None:
+    os.environ['BOT_ALREADY_STARTED'] = 'true'
+    print("🚀 Uruchamiam bota w tle...")
+    threading.Thread(target=run_bot_process, daemon=True).start()
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
