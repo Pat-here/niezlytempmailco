@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row text-center">
+    <div class="col-md-4 mb-4">
+        <div class="card p-4">
+            <h6 class="text-muted text-uppercase">Wszyscy Użytkownicy</h6>
+            <h2 class="display-4 fw-bold">{{ stats.users }}</h2>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card p-4">
+            <h6 class="text-muted text-uppercase">Aktywne Skrzynki</h6>
+            <h2 class="display-4 fw-bold">{{ stats.emails }}</h2>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card p-4 text-danger">
+            <h6 class="text-uppercase">Zbanowani</h6>
+            <h2 class="display-4 fw-bold">{{ stats.banned }}</h2>
+        </div>
+    </div>
+</div>
+<div class="card p-5 mt-3 bg-light text-center">
+    <h1 class="display-5">Witaj w panelu!</h1>
+    <p class="lead">Zarządzaj botem i monitoruj jego aktywność.</p>
+</div>
+{% endblock %}

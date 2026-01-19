@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<h4 class="mb-4">🕵️ Spy Mode - Ostatnie wiadomości w sieci</h4>
+<div class="row">
+    {% for msg in messages %}
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">Do: <code>{{ msg.addr }}</code></h6>
+                <h5 class="card-title">{{ msg.subject }}</h5>
+                <p class="card-text small"><strong>Od:</strong> {{ msg.from }}</p>
+                <p class="card-text bg-light p-2 rounded border"><small>{{ msg.intro }}...</small></p>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-12">
+        <div class="alert alert-info">Brak wiadomości w ostatnio aktywnych skrzynkach.</div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
