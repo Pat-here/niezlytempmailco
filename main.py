@@ -3,15 +3,18 @@ from web_app import app
 from thunder_mail import run_bot_process
 import os
 
-if __name__ == "__main__":
-    print("🚀 Uruchamianie aplikacji ThunderMail...")
-
-    # Uruchom bota w osobnym wątku
+# WAŻNE: To musi być POZA sekcją if __name__ == "__main__"
+# Dzięki temu Gunicorn uruchomi bota podczas startu serwera
+print("🚀 Inicjalizacja systemu ThunderMail...")
+try:
     bot_thread = threading.Thread(target=run_bot_process)
-    bot_thread.daemon = True  # Pozwól na zamknięcie wątku gdy główny program się zakończy
+    bot_thread.daemon = True
     bot_thread.start()
+    print("🤖 Wątek bota został zainicjowany pomyślnie.")
+except Exception as e:
+    print(f"❌ Błąd podczas startu wątku bota: {e}")
 
-    # Uruchom serwer Flask
+if __name__ == "__main__":
+    # Ta sekcja wykona się tylko przy lokalnym uruchomieniu: python main.py
     port = int(os.environ.get("PORT", 5000))
-    # Na Renderze Gunicorn sam obsłuży serwowanie, to jest głównie do testów lokalnych
-    app.run(host="0.0.0.0", port=port, debug=False)
+    app.run(host="0.0.0.0", port=port)
