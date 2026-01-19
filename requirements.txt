@@ -1,4 +1,4 @@
-python-telegram-bot==20.6
+python-telegram-bot==21.9
 psycopg2-binary
 requests
 python-dotenv
